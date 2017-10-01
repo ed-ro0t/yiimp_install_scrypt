@@ -417,6 +417,8 @@ sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled
 sudo ln -s /home/frontend/yiimp/web /var/www/$server_name/html
 sudo ln -s /etc/nginx/sites-available/panel.$server_name.conf /etc/nginx/sites-enabled/panel.$server_name.conf
 sudo ln -s /home/panel/yiimp/web /var/www/panel.$server_name/html
+sudo chmod -R 777 /home/frontend
+sudo chmod -R 777 /home/panel
 sudo service nginx restart
 	if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y" || "$ssl_install" == "") ]]; then
     output "Install LetsEncrypt and setting SSL"
@@ -926,14 +928,12 @@ whoami=`whoami`
 sudo chmod -R 775 /root/backup/
 #sudo chmod -R 775 /var/log
 #sudo chmod -R 775 /var/web/serverconfig.php
-sudo chown -R frontend.frontend /home/frontend
-sudo chown -R panel.panel /home/panel
-sudo chown -R frontend.www-data /home/frontend/yiimp/web
-sudo chown -R panel.www-data /home/panel/yiimp/web
+sudo chown -R frontend.www-data /home/frontend
+sudo chown -R panel.www-data /home/panel
 sudo chown -R stratum.stratum /home/stratum
 sudo chown -R stratum.stratum /var/stratum
-sudo chmod -R 775 /home/frontend
-sudo chmod -R 775 /home/panel
+sudo chmod -R 770 /home/frontend
+sudo chmod -R 770 /home/panel
 sudo chmod -R 770 /home/stratum
 sudo chmod -R 770 /var/stratum
 sudo find /home/frontend -type f ! -name '*.php' -exec chmod 664 {} \;
