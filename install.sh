@@ -934,8 +934,8 @@ sudo chown -R stratum.stratum /home/stratum
 sudo chown -R stratum.stratum /var/stratum
 sudo chmod -R 775 /home/frontend
 sudo chmod -R 775 /home/panel
-sudo chmod -R 775 /home/stratum
-sudo chmod -R 775 /var/stratum
+sudo chmod -R 770 /home/stratum
+sudo chmod -R 770 /var/stratum
 sudo find /home/frontend -type f ! -name '*.php' -exec chmod 664 {} \;
 sudo find /home/panel -type f ! -name '*.php' -exec chmod 664 {} \;
 sudo find /home/frontend -name '*.php' -type f -exec chmod 600 {} \;
