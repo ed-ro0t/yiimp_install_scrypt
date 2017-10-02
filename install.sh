@@ -266,6 +266,9 @@ sudo chmod +x /var/stratum/config/run.sh
       sudo sed -i 's/^user = www-data/user = panel/' /etc/php/7.0/fpm/pool.d/panel.conf
       sudo sed -i 's/^group = www-data/group = panel/' /etc/php/7.0/fpm/pool.d/panel.conf
       sudo sed -i 's/php7\.0-fpm\.sock/php7\.0-fpm-panel\.sock/' /etc/php/7.0/fpm/pool.d/panel.conf
+      sudo sed -i 's/# server_tokens off/server_tokens off/' /etc/nginx/nginx.conf
+      sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/7.0/cli/php.ini
+      sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/7.0/fpm/php.ini
     output "Creating webserver initial config file"
     output ""
 echo 'include /etc/nginx/blockuseragents.rules;
@@ -943,7 +946,7 @@ sudo find /home/panel -name '*.php' -type f -exec chmod 600 {} \;
 sudo find /home/frontend -name '*.sh' -type f -exec chmod 700 {} \;
 sudo find /home/panel -name '*.sh' -type f -exec chmod 700 {} \;
 sudo service nginx restart
-sudo service php7.0-fpm reload
+sudo service php7.0-fpm restart
 clear
 output "Whew that was fun, just some reminders. Your mysql information is saved in ~/.my.cnf. this installer did not directly install anything required to build coins."
 output ""
