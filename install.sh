@@ -331,23 +331,31 @@ echo 'include /etc/nginx/blockuseragents.rules;
 		location ~ /.well-known {
 		allow all;
         }
-		location /phpmyadmin {
-        auth_basic "Admin Login";
-        auth_basic_user_file /etc/nginx/pma_pass_panel;
-  		root /usr/share/;
-  		index index.php;
-  		try_files $uri $uri/ =404;
-  		location ~ ^/phpmyadmin/(doc|sql|setup)/ {
-    		deny all;
-  	}
-  		location ~ /phpmyadmin/(.+\.php)$ {
-    		fastcgi_pass unix:/run/php/php7.0-fpm.sock;
-    		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    		include fastcgi_params;
-    		include snippets/fastcgi-php.conf;
-  	}
- }
- }
+        location /phpmyadmin {
+            root /usr/share/;
+            auth_basic "Admin Login";
+            auth_basic_user_file /etc/nginx/pma_pass_panel;
+            index index.php index.html index.htm;
+            location ~ ^/phpmyadmin/(doc|sql|setup)/ {
+                deny all;
+            }
+            location ~ ^/phpmyadmin/(.+\.php)$ {
+                try_files $uri =404;
+                root /usr/share/;
+                fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+           }
+           location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
+                root /usr/share/;
+           }
+       }
+
+       location /phpMyAdmin {
+           rewrite ^/* /phpmyadmin last;
+       }
+}
 ' | sudo -E tee /etc/nginx/sites-available/panel.$server_name.conf >/dev/null 2>&1
 echo 'include /etc/nginx/blockuseragents.rules;
 	server {
@@ -527,22 +535,30 @@ echo 'include /etc/nginx/blockuseragents.rules;
             location ~ /\.ht {
                 deny all;
             }
-	    location /phpmyadmin {
-        auth_basic "Admin Login";
-        auth_basic_user_file /etc/nginx/pma_pass_panel;
-  		root /usr/share/;
-  		index index.php;
-  		try_files $uri $uri/ =404;
-  		location ~ ^/phpmyadmin/(doc|sql|setup)/ {
-    		deny all;
-  	}
-  		location ~ /phpmyadmin/(.+\.php)$ {
-    		fastcgi_pass unix:/run/php/php7.0-fpm.sock;
-    		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    		include fastcgi_params;
-    		include snippets/fastcgi-php.conf;
-  	}
- }
+        location /phpmyadmin {
+            root /usr/share/;
+            auth_basic "Admin Login";
+            auth_basic_user_file /etc/nginx/pma_pass_panel;
+            index index.php index.html index.htm;
+            location ~ ^/phpmyadmin/(doc|sql|setup)/ {
+                deny all;
+            }
+            location ~ ^/phpmyadmin/(.+\.php)$ {
+                try_files $uri =404;
+                root /usr/share/;
+                fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+           }
+           location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
+                root /usr/share/;
+           }
+       }
+
+       location /phpMyAdmin {
+           rewrite ^/* /phpmyadmin last;
+       }
  }
         
 ' | sudo -E tee /etc/nginx/sites-available/panel.$server_name.conf >/dev/null 2>&1
