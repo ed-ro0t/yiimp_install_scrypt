@@ -114,8 +114,8 @@ default         0;
     password=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
     password2=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
     password3=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-    pwdbasicauthpanel=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1`
-    pwdbasicauthphpmyadmin=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1`
+    pwdbasicauthpanel=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
+    pwdbasicauthphpmyadmin=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
     basicauthpanel=`echo $pwdbasicauthpanel | openssl passwd -stdin`
     basicauthphpmyadmin=`echo $pwdbasicauthphpmyadmin | openssl passwd -stdin`
     sudo echo "panel:$basicauthpanel" > /etc/nginx/pma_pass_panel
